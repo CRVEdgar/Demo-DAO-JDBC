@@ -5,8 +5,10 @@
  */
 package aplicacao;
 
+import java.util.List;
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
+import model.entities.Departament;
 import model.entities.Seller;
 
 /**
@@ -22,5 +24,13 @@ public class Programa {
         System.out.println("======= TESTANDO BUSCA POR ID ======");
         Seller vendedor = sellerDao.findById(3);
         System.out.println(vendedor);
+        
+        System.out.println("======= TESTANDO BUSCA POR ID DO DEPARTAMENTO ======");
+        Departament deptoSearch =  new Departament(2, null);
+        List<Seller> lista = sellerDao.findByDepartment(deptoSearch);
+        
+        for(Seller ven: lista){
+            System.out.println(ven);
+        }
     }
 }
