@@ -55,17 +55,10 @@ public class SellerDaoJDBC implements SellerDao{
             st.setInt(1, id);
             rs = st.executeQuery();
             if(rs.next()){ //testa se rs retornou algum resultado da consulta
-                Departament dep = new Departament();
-                dep.setId(rs.getInt("DepartmentId"));
-                dep.setName(rs.getString("DepName"));
+                Departament dep = instantiateDepartment(rs); //instancia a partir da funcao descrita no final deste classe
                 
-                Seller vendedor = new Seller();
-                vendedor.setName(rs.getString("Name"));
-                vendedor.setId(rs.getInt("Id"));
-                vendedor.setEmail(rs.getString("Email"));
-                vendedor.setDepartment(dep);
-                vendedor.setBirthdate(rs.getDate("BirthDate"));
-                vendedor.setBasesalary(rs.getDouble("BaseSalary"));
+                Seller vendedor = instantiateSeller(rs, dep); //instancia a partir da funcao descrita no final deste classe
+                
                 return vendedor;
             }
             return null;
@@ -81,6 +74,27 @@ public class SellerDaoJDBC implements SellerDao{
     @Override
     public List<Seller> findAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Departament instantiateDepartment(ResultSet rs) throws SQLException {
+        Departament dep = new Departament();
+        dep.setId(rs.getInt("DepartmentId"));
+        dep.setName(rs.getString("DepName"));
+        
+        return dep;  
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Departament dep) throws SQLException {
+        
+        Seller vendedor  = new Seller();
+        vendedor.setName(rs.getString("Name"));
+        vendedor.setId(rs.getInt("Id"));
+        vendedor.setEmail(rs.getString("Email"));
+        vendedor.setDepartment(dep);
+        vendedor.setBirthdate(rs.getDate("BirthDate"));
+        vendedor.setBasesalary(rs.getDouble("BaseSalary"));
+        
+        return vendedor;
     }
     
 }
