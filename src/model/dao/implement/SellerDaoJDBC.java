@@ -120,7 +120,45 @@ public class SellerDaoJDBC implements SellerDao{
 
     @Override
     public List<Seller> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        String comando = "SELECT seller.*,department.Name as DepName"
+                        + " FROM seller INNER JOIN department"
+                        + " ON seller.DepartmentId = department.Id"
+                        + " ORDER BY Name ";
+        
+        try{
+            st = conn.prepareStatement(comando);
+            
+            rs = st.executeQuery();
+            List<Seller> lista = new ArrayList<>();
+            Map<Integer, Departament> map = new HashMap<>();
+            
+            //a Query pode retorna mais de um resultado por isso usamos a lista e o while
+            while(rs.next()){ //enquanto houver resultados retornados da busca
+                
+                Departament dep = map.get(rs.getInt("DepartmentId")); // realiza uma busca de acordo com DepartmentId retornado do executeQuery
+                
+            //se o departamento ja exixtir, ele sera reaproveitado, senao sera criada uma nova instancia
+                if(dep == null){ // se a busca retornou null, ou seja, nao a variavela ainda nao foi instanciada com o metodo instantiateDepartment, entao ela sera instanciada
+                    dep = instantiateDepartment(rs); //UM MESMO DEPARTAMENTO (neste caso) soh eh instaciada uma unica vez (ver explicacao na pg do material)
+                    map.put(rs.getInt("DepartmentId"), dep); //agora a variavel recebe um valor, entao nao caira mais no IF nos proximos loops
+                }
+                
+                Seller vendedor = instantiateSeller(rs, dep); //instancia a partir da funcao descrita no final deste classe
+                lista.add(vendedor);
+                
+            }
+            
+            return lista;
+        }catch(SQLException e){
+            throw new DbException(e.getMessage());         
+        }finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+      
     }
 
     private Departament instantiateDepartment(ResultSet rs) throws SQLException {

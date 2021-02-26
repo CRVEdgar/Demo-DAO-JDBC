@@ -32,5 +32,12 @@ public class Programa {
         for(Seller ven: lista){
             System.out.println(ven);
         }
+        
+        System.out.println("======= TESTANDO BUSCA TODOS OS REGISTROS ======");
+        List<Seller> listaAll = sellerDao.findAll();
+        
+        for(Seller venAll: listaAll){
+            System.out.println(venAll);
+        }
     }
 }
