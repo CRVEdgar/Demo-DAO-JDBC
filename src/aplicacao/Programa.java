@@ -5,7 +5,12 @@
  */
 package aplicacao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
 import model.entities.Departament;
@@ -17,6 +22,7 @@ import model.entities.Seller;
  */
 public class Programa {
     public static void main(String[] args) {
+        SimpleDateFormat formatacao = new SimpleDateFormat("yyyy-MM-dd");
  
         //(INJECAO DE DEPENDENCIA SEM EXPLICITAR A IMPLEMENTACAO)
         SellerDao sellerDao = DaoFactory.createSellerDao(); //desta forma o programa conhece apenas a interface
@@ -38,6 +44,16 @@ public class Programa {
         
         for(Seller venAll: listaAll){
             System.out.println(venAll);
+        }
+        
+        System.out.println("======= TESTANDO INSERCAO DE NOVOS REGISTROS ======");
+        try {
+            Seller novoVendedor = new Seller(1, "Vitoria", "vitoria@gmail.com", formatacao.parse("1975-02-16"), 4000.00, deptoSearch);
+            sellerDao.insert(novoVendedor);
+            System.out.println("NOVO VENDEDOR INSERIDO || ID: " + novoVendedor.getId());
+        } catch (ParseException ex) {
+            System.out.println("ERRO NA DATA: " + ex.getMessage());
+            //Logger.getLogger(Programa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
