@@ -100,7 +100,14 @@ public class SellerDaoJDBC implements SellerDao{
         try{
             st = conn.prepareStatement(comando);
             st.setInt(1, id);
-            st.executeUpdate();
+            //st.executeUpdate();
+            
+            ///* CASO QUEIRA TESTAR SE O ID EXISTE NO BANCO
+            int linhasAfetadas = st.executeUpdate();
+            if(linhasAfetadas == 0){
+                throw new DbException("ERRO! OBJETO NAO ENCONTRADO NO BANCO!");
+            }
+           // */
             
         }catch(SQLException e){
             throw new DbException(e.getMessage());

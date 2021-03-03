@@ -63,7 +63,7 @@ public class Programa {
         System.out.println("Atualizacao concluida");
         
         System.out.println("======= TESTANDO DELETE DE REGISTROS ======");
-        sellerDao.deleteById(12);
+        sellerDao.deleteById(15);
         System.out.println("DELETE com sucesso! ");
         
     }
