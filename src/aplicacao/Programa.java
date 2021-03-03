@@ -61,5 +61,10 @@ public class Programa {
         vendedor.setName("Lucas Piton");
         sellerDao.update(vendedor);
         System.out.println("Atualizacao concluida");
+        
+        System.out.println("======= TESTANDO DELETE DE REGISTROS ======");
+        sellerDao.deleteById(12);
+        System.out.println("DELETE com sucesso! ");
+        
     }
 }
