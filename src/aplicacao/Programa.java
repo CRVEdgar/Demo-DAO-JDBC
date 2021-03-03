@@ -55,5 +55,11 @@ public class Programa {
             System.out.println("ERRO NA DATA: " + ex.getMessage());
             //Logger.getLogger(Programa.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        System.out.println("======= TESTANDO UPDATE DE REGISTROS ======");
+        vendedor = sellerDao.findById(1); // procurando no banco o vendedor do ID informado no parametro
+        vendedor.setName("Lucas Piton");
+        sellerDao.update(vendedor);
+        System.out.println("Atualizacao concluida");
     }
 }
